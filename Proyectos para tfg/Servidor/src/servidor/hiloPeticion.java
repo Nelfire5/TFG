@@ -8,6 +8,8 @@ package servidor;
 import bongoplayercad.BongoPlayerCAD;
 import bongoplayerpojo.Cancion;
 import bongoplayerpojo.ExcepcionBP;
+import bongoplayerpojo.Lista;
+import bongoplayerpojo.Lista_Cancion;
 import bongoplayerpojo.Usuario;
 import bongoplayerpojocomunicaciones.ExcepcionBPComunicaciones;
 import bongoplayerpojocomunicaciones.Peticion;
@@ -86,16 +88,16 @@ public class hiloPeticion extends Thread{
                 //-------------------------------------------------------
                     
                 case Peticion.INSERTAR_CANCION:
-                    registrosAfectados = eliminarUsuario(peticion);
+                    registrosAfectados = insertarCancion(peticion);
                     respuesta = registrosAfectados;
                     break;
                 case Peticion.ELIMINAR_CANCION:
-                    registrosAfectados = eliminarUsuario(peticion);
-                    respuesta = registrosAfectados;
+                    //registrosAfectados = eliminarUsuario(peticion);
+                    respuesta = 0;
                     break;
                 case Peticion.MODIFICAR_CANCION:
-                    registrosAfectados = modificarUsuario(peticion);
-                    respuesta = registrosAfectados;
+                    //registrosAfectados = modificarUsuario(peticion);
+                    respuesta = 0;
                     break;
                 case Peticion.LEER_CANCION:
                     //Cancion canciones = leerUsuario(peticion);
@@ -105,8 +107,41 @@ public class hiloPeticion extends Thread{
                     ArrayList<Cancion> canciones = leerCanciones();
                     respuesta = canciones;
                     break;
+                
+                //-------------------------------------------------------
                     
+                case Peticion.INSERTAR_LISTA:
+                    registrosAfectados = insertarLista(peticion);
+                    respuesta = registrosAfectados;
+                    break;
+                case Peticion.ELIMINAR_LISTA:
+                    //registrosAfectados = eliminarUsuario(peticion);
+                    respuesta = 0;
+                    break;
+                case Peticion.MODIFICAR_LISTA:
+                    //registrosAfectados = modificarUsuario(peticion);
+                    respuesta = 0;
+                    break;
+                case Peticion.LEER_LISTA:
+                    //Cancion canciones = leerUsuario(peticion);
+                    //respuesta = "";
+                    break;
+                case Peticion.LEER_LISTAS: 
+                    ArrayList<Lista> listas = leerListas();
+                    respuesta = listas;
+                    break;
                       
+                //-------------------------------------------------------
+                    
+                case Peticion.INSERTAR_LISTA_CANCION:
+                    registrosAfectados = insertarLista_Cancion(peticion);
+                    respuesta = registrosAfectados;
+                    break;
+                case Peticion.LEER_LISTAS_CANCIONES:
+                    ArrayList<Lista_Cancion> listas_canciones = leerListas_Canciones();
+                    respuesta = listas_canciones;
+                    break;
+                    
                 default:
                     System.out.println("Log class not found excepcion"+"Operacion no soportada en el protocolo");
                     ExcepcionBPComunicaciones e = new ExcepcionBPComunicaciones();
@@ -172,12 +207,65 @@ public class hiloPeticion extends Thread{
         return usuarios;
     }
     
+    //--------------------------------------------------------------------------
     
+    private Integer insertarCancion(Peticion peticion) throws ExcepcionBP
+    {
+        int cancion = cad.insertarCancion((Cancion) peticion.getObjeto());
+        return cancion;
+    }
     
+    private ArrayList<Cancion> leerCancion(Peticion peticion) throws ExcepcionBP
+    {
+        ArrayList<Cancion> cancion = cad.leerCancion(peticion.getPk());
+        return cancion;
+    }
     
     private ArrayList<Cancion> leerCanciones() throws ExcepcionBP
     {
         ArrayList<Cancion> canciones = cad.leerCanciones();
         return canciones;
+    }
+    
+    //--------------------------------------------------------------------------
+    
+    private Integer insertarLista(Peticion peticion) throws ExcepcionBP
+    {
+        int lista = cad.insertarLista((Lista) peticion.getObjeto());
+        return lista;
+    }
+    private Integer eliminarLista(Peticion peticion) throws ExcepcionBP
+    {
+        int lista = cad.eliminarLista(peticion.getPk());
+        return lista;
+    }
+    private Integer modificarLista(Peticion peticion) throws ExcepcionBP
+    {
+        int lista = cad.actualizarLista(peticion.getPk(), (Lista) peticion.getObjeto());
+        return null;
+    }
+    private Lista leerLista(Peticion peticion) throws ExcepcionBP
+    {
+        Lista lista = cad.leerLista(peticion.getPk());
+        return lista;
+    }
+    private ArrayList<Lista> leerListas() throws ExcepcionBP
+    {
+        ArrayList<Lista> listas = cad.leerListas();
+        return listas;
+    }
+    
+    //--------------------------------------------------------------------------
+    
+    private Integer insertarLista_Cancion(Peticion peticion) throws ExcepcionBP
+    {
+        int lista = cad.insertarLista_Cancion((Lista_Cancion) peticion.getObjeto());
+        return lista;
+    }
+    
+    private ArrayList<Lista_Cancion> leerListas_Canciones() throws ExcepcionBP
+    {
+        ArrayList<Lista_Cancion> listas_canciones = cad.leerListas_Canciones();
+        return listas_canciones;
     }
 }

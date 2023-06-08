@@ -1,3 +1,7 @@
+
+
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,7 +19,7 @@ public class Cancion implements Serializable{
     
     Integer cancionId;
     String nombre;
-    Double duracion;
+    String duracion;
     String artista;
     String archivo;
 
@@ -28,7 +32,7 @@ public class Cancion implements Serializable{
         this.cancionId = cancionId;
     }
 
-    public Cancion(Integer cancionId, String nombre, Double duracion, String artista, String archivo) {
+    public Cancion(Integer cancionId, String nombre, String duracion, String artista, String archivo) {
         this.cancionId = cancionId;
         this.nombre = nombre;
         this.duracion = duracion;
@@ -53,11 +57,11 @@ public class Cancion implements Serializable{
         this.nombre = nombre;
     }
 
-    public Double getDuracion() {
+    public String getDuracion() {
         return duracion;
     }
 
-    public void setDuracion(Double duracion) {
+    public void setDuracion(String duracion) {
         this.duracion = duracion;
     }
 

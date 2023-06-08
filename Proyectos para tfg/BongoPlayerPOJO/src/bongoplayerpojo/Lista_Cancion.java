@@ -1,3 +1,5 @@
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,36 +15,36 @@ import java.io.Serializable;
  */
 public class Lista_Cancion implements Serializable{
     
-    Lista lista;
-    Cancion cancion;
+    Integer lista;
+    Integer cancion;
     
     static final long serialVersionUID= 0x5L;
 
     public Lista_Cancion() {
     }
 
-    public Lista_Cancion(Lista lista) {
+    public Lista_Cancion(Integer lista) {
         this.lista = lista;
     }
 
-    public Lista_Cancion(Lista lista, Cancion cancion) {
+    public Lista_Cancion(Integer lista, Integer cancion) {
         this.lista = lista;
         this.cancion = cancion;
     }
 
-    public Lista getLista() {
+    public Integer getLista() {
         return lista;
     }
 
-    public void setLista(Lista lista) {
+    public void setLista(Integer lista) {
         this.lista = lista;
     }
 
-    public Cancion getCancion() {
+    public Integer getCancion() {
         return cancion;
     }
 
-    public void setCancion(Cancion cancion) {
+    public void setCancion(Integer cancion) {
         this.cancion = cancion;
     }
 

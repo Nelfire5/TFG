@@ -553,7 +553,7 @@ public class BongoPlayerCAD {
             PreparedStatement sentenciaPreparada = conexion.prepareStatement(dml);
 
             sentenciaPreparada.setString(1, cancion.getNombre());
-            sentenciaPreparada.setDouble(2, cancion.getDuracion());
+            sentenciaPreparada.setString(2, cancion.getDuracion());
             sentenciaPreparada.setString(3, cancion.getArtista());
             sentenciaPreparada.setString(4, cancion.getArchivo());
             
@@ -683,9 +683,9 @@ public class BongoPlayerCAD {
                 Cancion c = new Cancion();
                 c.setCancionId(resultado.getInt("cancion_id"));
                 c.setNombre(resultado.getString("nombre_cancion"));
-                c.setDuracion(resultado.getDouble("duracion"));
+                c.setDuracion(resultado.getString("duracion"));
                 c.setArtista(resultado.getString("artista"));
-                //c.setArchivo(resultado.getString("archivo"));
+                c.setArchivo(resultado.getString("archivo"));
                 canciones.add(c);   
             }
             resultado.close();
@@ -728,9 +728,9 @@ public class BongoPlayerCAD {
                 Cancion c = new Cancion();
                 c.setCancionId(resultado.getInt("cancion_id"));
                 c.setNombre(resultado.getString("nombre_cancion"));
-                c.setDuracion(resultado.getDouble("duracion"));
+                c.setDuracion(resultado.getString("duracion"));
                 c.setArtista(resultado.getString("artista"));
-                //c.setArchivo(resultado.getString("archivo"));
+                c.setArchivo(resultado.getString("archivo"));
                 canciones.add(c); 
             }
             resultado.close();
@@ -748,4 +748,219 @@ public class BongoPlayerCAD {
         return canciones;
     }
     
+    
+    //------------------------------------------------------------------
+    //------------------------------------------------------------------
+    //------------------------------------------------------------------
+    
+    /**
+    * Inserta un registro en la tabla Lista
+    * @param lista_Cancion datos de la lista a insertar
+    * @return Cantidad de registros insertados
+    * @throws ExcepcionBP si se produce cualquier error en la inserccion de la lista en la base de datos
+    * @author Nelson Macedo
+    * @version 1.0
+    * @since 0.0
+    */
+    public int insertarLista_Cancion(Lista_Cancion lista_Cancion) throws ExcepcionBP{
+        
+        conectar();
+        int registrosAfectados = 0;
+        String dml = "INSERT INTO LISTA_CANCION (LISTA_ID,CANCION_ID)" +
+                    " VALUES (?,?)";        
+        try {
+                       
+            PreparedStatement sentenciaPreparada = conexion.prepareStatement(dml);
+
+            sentenciaPreparada.setInt(1, lista_Cancion.getLista());
+            sentenciaPreparada.setInt(2, lista_Cancion.getCancion());
+            
+            registrosAfectados = sentenciaPreparada.executeUpdate();
+            sentenciaPreparada.close();
+            conexion.close();
+                
+        } catch (SQLException ex) {
+            ExcepcionBP e = new ExcepcionBP();
+            e.setMensajeErrorAdmin(ex.getMessage());
+            e.setCodigoError(ex.getErrorCode());
+            e.setSentenciaSQL(dml);
+            switch (ex.getErrorCode()){
+                case 1:     e.setMensajeErrorUser("El nombre de la CANCION ya esta en uso, no se puede repetir. "
+                        + "En caso de que el error persista consulte con el admin");
+                            break;
+                case 1400:  e.setMensajeErrorUser("Debe introducir un dato en los campos obligatorios");
+                            break;
+                            
+                default :   e.setMensajeErrorUser("Error general en el sistema. Consulte con el administrador ");
+                            break;              
+            }
+            throw e;
+        }
+        return registrosAfectados;
+    }
+    /**
+    * Elimina un registro en la tabla Lista
+    * @param cancionId ID de la lista a eliminar
+    * @return Cantidad de registros insertados
+    * @throws ExcepcionBP si se produce cualquier error en la inserccion de la lista en la base de datos
+    * @author Nelson Macedo
+    * @version 1.0
+    * @since 0.0
+    */
+//    public int eliminarCancion(Integer cancionId) throws ExcepcionBP{
+//        conectar();
+//        int registrosAfectados = 0;      
+//        String dml = "DELETE FROM CANCION WHERE CANCION_ID="+cancionId;
+//
+//        try {
+//            
+//            PreparedStatement sentenciaPreparada = conexion.prepareStatement(dml);
+//
+//            registrosAfectados = sentenciaPreparada.executeUpdate();
+//            sentenciaPreparada.close();
+//            conexion.close();
+//            
+//        } catch (SQLException ex) {
+//            ExcepcionBP e = new ExcepcionBP();
+//            e.setMensajeErrorAdmin(ex.getMessage());
+//            e.setCodigoError(ex.getErrorCode());
+//            e.setSentenciaSQL(dml);
+//            e.setMensajeErrorUser("Error general en el sistema. Consulte con el administrador ");
+//            throw e;
+//        }
+//        return registrosAfectados;
+//    }
+    /**
+    * Modifica un registro en la tabla Lista
+    * @param cancionId ID de la lista a modificar
+    * @param cancion Datos de la lista a modificar
+    * @return Cantidad de registros insertados
+    * @throws ExcepcionBP si se produce cualquier error en la inserccion de la lista en la base de datos
+    * @author Nelson Macedo
+    * @version 1.0
+    * @since 0.0
+    */
+//    public int actualizarLista_Cancion(Integer cancionId, Lista_Cancion cancion) throws ExcepcionBP{
+//        conectar();
+//        int registrosAfectados = 0;      
+//        String dml = "UPDATE CANCION set NOMBRE_CANCION=?"
+//                + "WHERE CANCION_ID="+cancionId;
+//        try {
+//            
+//            PreparedStatement sentenciaPreparada = conexion.prepareStatement(dml);
+//
+//            sentenciaPreparada.setString(1, cancion.getNombre());
+//            
+//            registrosAfectados = sentenciaPreparada.executeUpdate();
+//            sentenciaPreparada.close();
+//            conexion.close();
+//            
+//        } catch (SQLException ex) {
+//            ExcepcionBP e = new ExcepcionBP();
+//            e.setMensajeErrorAdmin(ex.getMessage());
+//            e.setCodigoError(ex.getErrorCode());
+//            e.setSentenciaSQL(dml);
+//            switch(ex.getErrorCode()){
+//                case 1:     e.setMensajeErrorUser("El nombre de la cancion ya esta en uso, no se puede repetir. "
+//                        + "En caso de que el error persista consulte con el admin");
+//                            break;
+//                case 1400:  e.setMensajeErrorUser("Debe introducir un dato en los campos obligatorios");
+//                            break;
+//                            
+//                default :   e.setMensajeErrorUser("Error general en el sistema. Consulte con el administrador ");
+//                            break;  
+//            }
+//            
+//            throw e;
+//        }
+//        return registrosAfectados;
+//    }
+    /**
+    * Lee un registro en la tabla Lista
+    * @param cancionId ID de la lista a leer
+    * @return Un objeto de tipo Lista
+    * @throws ExcepcionBP si se produce cualquier error en la inserccion de la lista en la base de datos
+    * @author Nelson Macedo
+    * @version 1.0
+    * @since 0.0
+    */
+//    public Lista_Cancion leerLista_Cancion(Integer cancionId) throws ExcepcionBP{
+//        
+//        conectar();
+//        ArrayList<Cancion> canciones = new ArrayList<>();
+//        String dql = "select * from CANCION "
+//                    + "where CANCION_ID = " + cancionId;
+//
+//        try {
+//            
+//            Statement sentencia = conexion.createStatement();
+//            ResultSet resultado = sentencia.executeQuery(dql);
+//            
+//            if(resultado.next())
+//            {
+//                Cancion c = new Cancion();
+//                c.setCancionId(resultado.getInt("cancion_id"));
+//                c.setNombre(resultado.getString("nombre_cancion"));
+//                c.setDuracion(resultado.getString("duracion"));
+//                c.setArtista(resultado.getString("artista"));
+//                c.setArchivo(resultado.getString("archivo"));
+//                canciones.add(c);   
+//            }
+//            resultado.close();
+//            sentencia.close();
+//            conexion.close();
+//            
+//        } catch (SQLException ex) {
+//            ExcepcionBP e = new ExcepcionBP();
+//            e.setMensajeErrorAdmin(ex.getMessage());
+//            e.setCodigoError(ex.getErrorCode());
+//            e.setSentenciaSQL(dql);
+//            e.setMensajeErrorUser("Error general en el sistema. Consulte con el administrador ");
+//            throw e;
+//        }
+//        return canciones;
+//    }
+    
+    /**
+    * Lee todos los registros en la tabla Lista
+    * @return Un objeto de tipo Lista
+    * @throws ExcepcionBP si se produce cualquier error en la inserccion de la lista en la base de datos
+    * @author Nelson Macedo
+    * @version 1.0
+    * @since 0.0
+    */
+    public ArrayList<Lista_Cancion> leerListas_Canciones( ) throws ExcepcionBP{
+        
+        conectar();
+        ArrayList<Lista_Cancion> listas_canciones = new ArrayList<>();
+        String dql = "select * from Lista_Cancion ";
+                
+
+        try {
+            
+            Statement sentencia = conexion.createStatement();
+            ResultSet resultado = sentencia.executeQuery(dql);
+            
+            while(resultado.next())
+            {
+                Lista_Cancion lc = new Lista_Cancion();
+                lc.setLista(resultado.getInt("lista_id"));
+                lc.setCancion(resultado.getInt("cancion_id"));
+
+                listas_canciones.add(lc); 
+            }
+            resultado.close();
+            sentencia.close();
+            conexion.close();
+            
+        } catch (SQLException ex) {
+            ExcepcionBP e = new ExcepcionBP();
+            e.setMensajeErrorAdmin(ex.getMessage());
+            e.setCodigoError(ex.getErrorCode());
+            e.setSentenciaSQL(dql);
+            e.setMensajeErrorUser("Error general en el sistema. Consulte con el administrador ");
+            throw e;
+        }
+        return listas_canciones;
+    }
 }

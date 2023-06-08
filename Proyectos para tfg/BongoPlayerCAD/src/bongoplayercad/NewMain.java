@@ -8,6 +8,7 @@ package bongoplayercad;
 import bongoplayerpojo.Cancion;
 import bongoplayerpojo.ExcepcionBP;
 import bongoplayerpojo.Lista;
+import bongoplayerpojo.Lista_Cancion;
 import bongoplayerpojo.Usuario;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,23 +30,45 @@ public class NewMain {
         
         Lista l = new Lista(null, "piripi", null, null,new Usuario(4));
         Usuario u = new Usuario(null, "x", "x", null, "as@gmail.com", "11", null, "Don-Jai");
-        Cancion c = new Cancion(null, "xx", 3.3, "xx", null);
+        Cancion c = new Cancion(null, "xx", "2", "xx", "x");
+        Lista_Cancion lc = new Lista_Cancion(1,831);
         
-        try {            
-           cad = new BongoPlayerCAD();
-            ra = cad.actualizarCancion(8, c);
+        try{
+            
+            cad = new BongoPlayerCAD();
+            ra = cad.insertarLista_Cancion(lc);
+            
+            
+            for(int i=0; i < cad.leerListas_Canciones().size();i++)
+            {
+                System.out.println(cad.leerListas_Canciones().get(i));
+            }
+            
+            
+        }catch (ExcepcionBP ex) {
+            System.out.println(ex.getMensajeErrorUser());
+            System.out.println(ex);
+        }
+        
+        
+        
+        
+        
+//        try {            
+//          cad = new BongoPlayerCAD();
+            //ra = cad.actualizarCancion(8, c);
             //ra = cad.insertarCancion(c);  
            //System.out.println(cad.leerCancion(1));
-            ra = cad.eliminarCancion(7);
+//            ra = cad.eliminarCancion(9);
 //            for(int i=0; i < cad.leerCanciones().size();i++)
 //            {
 //                System.out.println(cad.leerCanciones().get(i));
 //            }
-
-        } catch (ExcepcionBP ex) {
-            System.out.println(ex.getMensajeErrorUser());
-            System.out.println(ex);
-        }
+//
+//        } catch (ExcepcionBP ex) {
+//            System.out.println(ex.getMensajeErrorUser());
+//            System.out.println(ex);
+//        }
 
 //        try {            
 //            cad = new BongoPlayerCAD();
